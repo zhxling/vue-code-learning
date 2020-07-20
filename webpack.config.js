@@ -1,12 +1,24 @@
 'use strict'
 
+const path = require('path')
+
+function resolve(dir) {
+    return path.join(__dirname, dir)
+}
+
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+
+console.log(CleanWebpackPlugin)
+
 module.exports = {
+    mode: 'development',
     entry: {
         mvue: './min-vue/mvue.js'
     },
     output: {
-        path: __dirname,
-        filename: '_./build/[name].js'
+        filename: '[name].js',
+        path: path.resolve(__dirname, 'dist')
     },
     resolve: {
         extensions: ['.js', '.vue', '.json'],
@@ -14,6 +26,16 @@ module.exports = {
             '@': resolve('src'),
         }
     },
+    devtool: 'inline-source-map',
+    devServer: {
+      contentBase: './dist'
+    },
+    plugins: [
+        new CleanWebpackPlugin(),
+        new HtmlWebpackPlugin({
+            title: 'Development'
+        })
+    ],
     module: {
         rules: [
             {
